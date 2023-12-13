@@ -1,0 +1,8 @@
+.metronome-container{
+    max-width: 40em;
+    border-radius: 5px;
+}
+
+.metronome-no-border{
+    border-width: 0;
+}
