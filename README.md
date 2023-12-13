@@ -12,4 +12,5 @@ Try it out [here](https://eatmygoose.github.io/Metronome/index.html)
 ## Credits:
 
 Original Sound Clip: ```https://www.soundsnap.com/tags/claves - Claves percussion loop - BPM 100 5```
+
 Reference Image: ```https://commons.wikimedia.org/wiki/File:White-toothed_woodrat.jpg```
