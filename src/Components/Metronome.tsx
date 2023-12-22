@@ -1,5 +1,3 @@
-import "./Metronome.css"
-
 import { TSubdivision, TTimeSignature } from '../Types/types'
 import { DropdownList } from "./DropdownList"
 import { subdivision2Name, timeSignature2Name } from "../Types/constants"
@@ -61,86 +59,81 @@ export function Metronome(props: IMetronome)
     const buttonClassess = ClassSelect(props.darkmode, "btn-primary", "");
 
     return (
-        <div 
-            className={`card metronome-container ${props.className || ""} ${ClassSelect(props.darkmode, "bg-dark metronome-no-border", "")}`}
-            style={props.style}
-        >
-            <div className="card-body">
-                <h1>{props.bpm} BPM</h1>
-                <div>
-                    <input 
-                        className={"slider"}
-                        type="range"
-                        min={minBpm}
-                        max={maxBpm}
-                        value={props.bpm}
-                        onChange={handleSliderChanged}
-                    />
-                </div>
-                <div style={{paddingTop:"4px", display:"flex", justifyContent:"center"}}>
-                    <div className="d-inline px-2">
-                        <button 
-                            className={`btn btn-action s-circle ${buttonClassess}`}
-                            onClick={() => TrySetBpm(props.bpm - 1)}
-                        >
-                            <i className="icon icon-minus"/>
-                        </button>
-                    </div>
-                    <div className="d-inline px-2">
-                        <button 
-                            className={`btn btn-action s-circle ${buttonClassess}`}
-                            onClick={() => TrySetBpm(props.bpm + 1)}
-                        >
-                            <i className="icon icon-plus"/>
-                        </button>
-                    </div>
-                </div>
-                
-                
-                <div className="py-2">
-                    <label className="form-label">Time Signature</label>
-                    <DropdownList
-                        className={dropdownListClasses}
-                        currentValue={props.timeSignature}
-                        onValueChanged={props.setTimeSignature as (_: string) => void}
-                        options={timeSignature2Name}
-                    />
-                </div>
-
-                <div className="py-2">
-                    <label className="form-label">Subdivision</label>
-                    <DropdownList
-                        className={dropdownListClasses}
-                        currentValue={props.subdivision}
-                        onValueChanged={props.setSubdivision as (_: string) => void}
-                        options={subdivision2Name}
-                    />
-                </div>
-
-                <div>
-                    <label className="form-label">Volume</label>
-                    <input 
-                        className="slider"
-                        type="range"
-
-                        min={0}
-                        max={2}
-                        step={0.05}
-
-                        value={props.volume}
-                        onChange={handleVolumeChanged}
-                    />
-                </div>
-                
-
-                <div className="py-2">
+        <div className="card-body">
+            <h1>{props.bpm} BPM</h1>
+            <div>
+                <input 
+                    className={"slider"}
+                    type="range"
+                    min={minBpm}
+                    max={maxBpm}
+                    value={props.bpm}
+                    onChange={handleSliderChanged}
+                />
+            </div>
+            <div style={{paddingTop:"4px", display:"flex", justifyContent:"center"}}>
+                <div className="d-inline px-2">
                     <button 
-                        className='btn btn-block btn-primary'
-                        onClick={()=> props.setPlay(!props.play)}
+                        className={`btn btn-action s-circle ${buttonClassess}`}
+                        onClick={() => TrySetBpm(props.bpm - 1)}
                     >
-                        {playButtonText}
+                        <i className="icon icon-minus"/>
                     </button>
                 </div>
+                <div className="d-inline px-2">
+                    <button 
+                        className={`btn btn-action s-circle ${buttonClassess}`}
+                        onClick={() => TrySetBpm(props.bpm + 1)}
+                    >
+                        <i className="icon icon-plus"/>
+                    </button>
+                </div>
+            </div>
+            
+            
+            <div className="py-2">
+                <label className="form-label">Time Signature</label>
+                <DropdownList
+                    className={dropdownListClasses}
+                    currentValue={props.timeSignature}
+                    onValueChanged={props.setTimeSignature as (_: string) => void}
+                    options={timeSignature2Name}
+                />
+            </div>
+
+            <div className="py-2">
+                <label className="form-label">Subdivision</label>
+                <DropdownList
+                    className={dropdownListClasses}
+                    currentValue={props.subdivision}
+                    onValueChanged={props.setSubdivision as (_: string) => void}
+                    options={subdivision2Name}
+                />
+            </div>
+
+            <div>
+                <label className="form-label">Volume</label>
+                <input 
+                    className="slider"
+                    type="range"
+
+                    min={0}
+                    max={2}
+                    step={0.05}
+
+                    value={props.volume}
+                    onChange={handleVolumeChanged}
+                />
+            </div>
+            
+
+            <div className="py-2">
+                <button 
+                    className='btn btn-block btn-primary btn-lg'
+                    onClick={()=> props.setPlay(!props.play)}
+                >
+                    {playButtonText}
+                </button>
             </div>
         </div>
     )

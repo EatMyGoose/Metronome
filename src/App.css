@@ -6,3 +6,12 @@ body{
     /*background-color: rgb(32, 19, 38);*/
     background-color: rgb(30, 30, 40);
 }
+
+.body-container{
+    max-width: 40em;
+    border-radius: 5px;
+}
+
+.body-no-border{
+    border-width: 0 !important;
+}

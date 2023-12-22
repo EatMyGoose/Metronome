@@ -2,6 +2,15 @@ import { isLeft } from "fp-ts/lib/Either";
 import { TSubdivision, TTimeSignature } from "./types";
 import * as t from 'io-ts'
 
+export interface IMetronomeProfile
+{
+    name: string,
+    
+    bpm: number,
+    timeSignature: TTimeSignature,
+    subdivision: TSubdivision
+}
+
 export interface IAppState
 {
     darkMode: boolean,
@@ -9,7 +18,8 @@ export interface IAppState
     play: boolean,
     timeSignature: TTimeSignature,
     subdivision: TSubdivision,
-    volume: number
+    volume: number,
+    profiles: IMetronomeProfile[]
 }
 
 export const defaultAppState : IAppState = {
@@ -18,16 +28,28 @@ export const defaultAppState : IAppState = {
     play: false,
     timeSignature: "4_4",
     subdivision: "crotchet",
-    volume: 1.0
+    volume: 1.0,
+    profiles: []
 };
+
+const timeSignatureValidator = t.union([ t.literal("4_4"), t.literal("3_4"), t.literal("2_4") ]);
+const subdivisionValidator = t.union([ t.literal("crotchet"), t.literal("quaver"), t.literal("triplet"), t.literal("semi_quaver") ]);
+
+const metronomeProfileValidator = t.type({
+    name: t.string,
+    bpm: t.number,
+    timeSignature: timeSignatureValidator,
+    subdivision: subdivisionValidator
+});
 
 const appStateValidator = t.type({
     darkMode: t.boolean,
     bpm: t.number,
     play: t.boolean,
-    timeSignature: t.union([ t.literal("4_4"), t.literal("3_4"), t.literal("2_4") ]),
-    subdivision: t.union([ t.literal("crotchet"), t.literal("quaver"), t.literal("triplet"), t.literal("semi_quaver") ]),
-    volume: t.number
+    timeSignature: timeSignatureValidator,
+    subdivision: subdivisionValidator,
+    volume: t.number,
+    profiles: t.array(metronomeProfileValidator)
 });
 
 const APP_STATE_KEY = "APP_STATE" as const;

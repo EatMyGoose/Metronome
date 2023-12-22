@@ -8,9 +8,11 @@ import React from 'react'
 import { TSubdivision, TTimeSignature } from "./Types/types"
 import { useMetronomeSynth } from "./Hooks/useMetronomeSynth"
 import { Appheader } from "./AppHeader"
-import { IAppState, LoadAppState } from "./Types/settings"
+import { IAppState, IMetronomeProfile, LoadAppState } from "./Types/settings"
 import { useSaveState } from "./Hooks/useSaveState"
 import { useClassToggle } from "./Hooks/useClassToggle"
+import { ClassSelect } from "./Types/util"
+import { Profile } from "./Components/Profiles"
 
 const initialState: IAppState = LoadAppState();
 
@@ -22,6 +24,7 @@ function App() {
   const [timeSignature, setTimeSignature] = React.useState<TTimeSignature>(initialState.timeSignature);
   const [subdivision, setSubdivision] = React.useState<TSubdivision>(initialState.subdivision);
   const [volume, setVolume] = React.useState<number>(initialState.volume);
+  const [profiles, setProfiles] = React.useState<IMetronomeProfile[]>(initialState.profiles);
 
   useMetronomeSynth(
     play,
@@ -37,11 +40,31 @@ function App() {
     play,
     timeSignature,
     subdivision,
-    volume
+    volume,
+    profiles
   });
 
   useClassToggle(document.body, darkMode, "bg-darkmode");
   
+  function onLoadProfile(newProfile: IMetronomeProfile)
+  {
+    setBpm(newProfile.bpm);
+    setSubdivision(newProfile.subdivision);
+    setTimeSignature(newProfile.timeSignature);
+  }
+
+  function onAddProfile(name: string)
+  {
+    const newProfile: IMetronomeProfile = {
+      name,
+      bpm,
+      timeSignature,
+      subdivision
+    };
+
+    setProfiles(profiles.concat([newProfile]));
+  }
+
   return (
     <>
       <Appheader
@@ -49,21 +72,36 @@ function App() {
         setDarkMode={setDarkMode}
       />
 
-      <Metronome
+      <div
         style={{marginTop:"1em"}}
-        className="p-centered"
-        bpm={bpm}
-        setBpm={setBpm}
-        play={play}
-        setPlay={setPlay}
-        timeSignature={timeSignature}
-        setTimeSignature={setTimeSignature}
-        subdivision={subdivision}
-        setSubdivision={setSubdivision}
-        volume={volume}
-        setVolume={setVolume}
-        darkmode={darkMode}
-      />
+        className={`card body-container p-centered ${ClassSelect(darkMode, "bg-dark body-no-border", "")}`}
+      >
+        <Metronome
+          bpm={bpm}
+          setBpm={setBpm}
+          play={play}
+          setPlay={setPlay}
+          timeSignature={timeSignature}
+          setTimeSignature={setTimeSignature}
+          subdivision={subdivision}
+          setSubdivision={setSubdivision}
+          volume={volume}
+          setVolume={setVolume}
+          darkmode={darkMode}
+        />
+
+        <div className="pt-2">
+          <div className="divider mx-2"/>
+        </div>
+
+        <Profile
+          profiles={profiles}
+          darkmode={darkMode}
+          onLoadProfile={onLoadProfile}
+          onAddProfile={onAddProfile}
+          onDeleteProfile={setProfiles}
+        />
+      </div>
     </>
   )
 }
